@@ -1,9 +1,5 @@
 import React,{useState} from 'react'
 import { StatusBar } from 'expo-status-bar';
-import { Formik } from 'formik';
-import {View} from 'react-native'
-import {Octicons,Ionicons} from '@expo/vector-icons'
-import KeyboardAvoidingWrapper from '../components/keyboardAvoidingWrapper';
 
 import {
     StyledContainer,
@@ -11,18 +7,7 @@ import {
     PageLogo,
     PageTitle,
     Subtitle,
-    StyledFormArea,
-    StyledTextInput,
-    StyledInputLabel,
-    LeftIcon,
-    RightIcon,
-    StyledButton,
-    ButtonText,
     Colors,
-    MsgBox,
-    Line,
-    ExtraView,
-    ExtraText,
     TextLink,
     TextLinkContent
 } from '../components/style'
