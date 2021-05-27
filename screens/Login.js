@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { Formik } from 'formik';
-import {View} from 'react-native'
+import {View,ActivityIndicator} from 'react-native'
 import {Octicons,Ionicons} from '@expo/vector-icons'
 import KeyboardAvoidingWrapper from '../components/keyboardAvoidingWrapper';
 
@@ -27,11 +27,47 @@ import {
     TextLinkContent
 } from '../components/style'
 
-const {brand,darklight}=Colors
+import axios from 'axios'
+
+const {brand,darklight,primary}=Colors
 
 const Login=({navigation})=>{
 
+
     const [hidePassword,setHidePassword]=useState(true)
+    const [message,setMessage]=useState()
+    const [messageType,setMessageType]=useState()
+
+    const handleLogin=async(credentials,setSubmitting)=>{
+
+        handleMessage(null)
+        const url='https://photo-app-backend-api.herokuapp.com/user/signin'
+
+        try{
+            const response=await axios.post(url,credentials)
+            const result=response.data
+            const {message,status,data}=result
+
+            if(status !== 'SUCCESS'){
+                handleMessage(message,status)
+            }
+            else{
+                navigation.navigate('Home',{...data[0]})
+            }
+            setSubmitting(false)
+        }
+        catch(error){
+            console.log(error.JSON())
+            handleMessage('An error occured. Check your connection and try again')
+            setSubmitting(false)
+        }
+        
+    }
+
+    const handleMessage=(message,type='FAILED')=>{
+        setMessage(message)
+        setMessageType(type)
+    }
 
     return (
         <KeyboardAvoidingWrapper>
@@ -44,11 +80,17 @@ const Login=({navigation})=>{
 
                     <Formik
                         initialValues={{email:'',password:''}}
-                        onSubmit={(values)=>{
-                            // we'll do authentication
-                            navigation.navigate('Home')
+                        onSubmit={(values,{setSubmitting})=>{
+                            
+                            if(values.email == '' || values.password == ''){
+                                handleMessage('All fields are mandatory')
+                                setSubmitting(false)
+                            }
+                            else{
+                                handleLogin(values,setSubmitting)
+                            }
                         }}
-                    >{({handleChange,handleBlur,handleSubmit,values})=><StyledFormArea>
+                    >{({handleChange,handleBlur,handleSubmit,values,isSubmitting})=><StyledFormArea>
                             <MytextInput
                                 label="Email Address"
                                 icon="mail"
@@ -73,10 +115,14 @@ const Login=({navigation})=>{
                                 hidePassword={hidePassword}
                                 setHidePassword={setHidePassword}
                             />
-                            <MsgBox>...</MsgBox>
-                            <StyledButton onPress={handleSubmit}>
+                            <MsgBox type={messageType}>{message}</MsgBox>
+                            {!isSubmitting && <StyledButton onPress={handleSubmit}>
                                 <ButtonText>Login</ButtonText>
-                            </StyledButton>
+                            </StyledButton>}
+
+                            {isSubmitting && <StyledButton disabled={true}>
+                                <ActivityIndicator size='large' color={primary} />
+                            </StyledButton>}
                             <Line />
                             <ExtraView>
                                 <ExtraText>Don't Have An Account Already?</ExtraText>

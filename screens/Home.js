@@ -14,7 +14,9 @@ import {
 
 const {brand,darklight}=Colors
 
-const Home=({navigation})=>{
+const Home=({navigation,route})=>{
+
+    const {username,email}=route.params
 
     return (
         <StyledContainer>
@@ -23,6 +25,8 @@ const Home=({navigation})=>{
                 <PageLogo resizeMode="cover" source={require('../assets/image/pic5.png')} />
                 <PageTitle>Photo App</PageTitle>
                 <Subtitle>Home Page</Subtitle>
+                <Subtitle>{username || 'nik'}</Subtitle>
+                <Subtitle>{email || 'nik@123'}</Subtitle>
                 <TextLink onPress={()=>navigation.navigate('Login')}>
                     <TextLinkContent>LogOut</TextLinkContent>
                 </TextLink>
