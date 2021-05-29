@@ -34,10 +34,6 @@ export const HomeContainer=styled(InnerContainer)`
     justify-content:center;
 `
 
-export const Avatar=styled.Image`
-    
-`
-
 export const PageLogo=styled.Image`
     width:250px;
     height:200px;
@@ -143,4 +139,61 @@ export const TextLink=styled.TouchableOpacity`
 export const TextLinkContent=styled.Text`
     color:${brand};
     font-size:15px;
+`
+export const Container=styled.View`
+    width:100%;
+    height:100%;
+`
+
+export const HeaderContainer=styled.View`
+    padding:50px;
+    width:100%;
+    height:250px;
+    backgroundColor:${primary};
+`
+export const Title=styled.Text`
+    font-size:40px;
+    text-align:center;
+    font-weight:bold;
+    color:${brand};
+    padding:20px;
+`
+export const AddPicContainer=styled.TouchableOpacity`
+    position:absolute;
+    width: 50px;
+    height: 50px;
+    alignItems:center;
+    justifyContent:center;
+    left:10px;
+    top:180px;
+`
+export const AddPicButton=styled.Image`
+    resizeMode:contain;
+    width: 50px;
+    height: 50px;
+`
+export const LogOutContainer=styled.TouchableOpacity`
+    top:45px;
+    left:250px;
+`
+
+export const LogOutContent=styled.Text`
+    color:${red};
+    font-size:20px;
+`
+
+export const PicBox=styled.View`
+    align-items:center;
+    margin:15px;
+`
+export const Picture=styled.Image`
+    width:200px;
+    height:200px;
+    padding:10px;
+    border-radius:10px
+`
+export const PicText=styled.Text`
+    color:${brand};
+    font-size:20px;
+    font-weight:bold;
 `

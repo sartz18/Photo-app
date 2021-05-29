@@ -7,6 +7,7 @@ const {primary,tertiary}=Colors
 import Login from '../screens/Login'
 import Signup from '../screens/Signup'
 import Home from '../screens/Home';
+import Addpic from '../screens/Addpic.js';
 
 const Stack=createStackNavigator()
 
@@ -30,6 +31,7 @@ const RootStack=()=>{
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="Signup" component={Signup} />
                 <Stack.Screen name="Home" component={Home} />
+                <Stack.Screen name="Addpic" component={Addpic} />
             </Stack.Navigator>
         </NavigationContainer>
     )

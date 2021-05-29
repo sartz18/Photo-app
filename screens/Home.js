@@ -1,39 +1,73 @@
-import React,{useState} from 'react'
-import { StatusBar } from 'expo-status-bar';
-
+import React,{useState,useEffect} from 'react'
+import KeyboardWrapper from '../components/keyboardAvoidingWrapper'
 import {
-    StyledContainer,
-    InnerContainer,
-    PageLogo,
-    PageTitle,
-    Subtitle,
     Colors,
-    TextLink,
-    TextLinkContent
+    Container,
+    HeaderContainer,
+    Title,
+    AddPicContainer,
+    AddPicButton,
+    LogOutContainer,
+    LogOutContent,
+    PicBox,
+    Picture,
+    PicText
 } from '../components/style'
-
-const {brand,darklight}=Colors
+import axios from 'axios'
 
 const Home=({navigation,route})=>{
 
-    const {username,email}=route.params
+    const [response,setResponse]=useState([])
+    
+    const getAllImage=async()=>{
+        const url='https://photo-app-backend-api.herokuapp.com/image/all'
+        const data=await axios.get(url)
+        for(let i=0;i<data.data.images.length;i++){
+            setResponse(prevItems => [...prevItems,data.data.images[i]])
+        }
+    }
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            getAllImage()
+        })
+        return unsubscribe
+      }, [navigation])
+
+    const clickHandler = () => {
+        navigation.navigate('Addpic',{...route.params})    
+    }
 
     return (
-        <StyledContainer>
-            <StatusBar style='dark' />
-            <InnerContainer>
-                <PageLogo resizeMode="cover" source={require('../assets/image/pic5.png')} />
-                <PageTitle>Photo App</PageTitle>
-                <Subtitle>Home Page</Subtitle>
-                <Subtitle>{username || 'nik'}</Subtitle>
-                <Subtitle>{email || 'nik@123'}</Subtitle>
-                <TextLink onPress={()=>navigation.navigate('Login')}>
-                    <TextLinkContent>LogOut</TextLinkContent>
-                </TextLink>
-            </InnerContainer>
-        </StyledContainer>
+        <KeyboardWrapper>
+            <Container>
+                <HeaderContainer>
+                    <Title>Photo App</Title>
+                    <AddPicContainer onPress={clickHandler}>
+                        <AddPicButton
+                            source={{
+                            uri:
+                                'https://raw.githubusercontent.com/AboutReact/sampleresource/master/plus_icon.png',
+                            }}
+                        />
+                    </AddPicContainer>
+                    <LogOutContainer  onPress={()=>navigation.navigate('Login') }>
+                        <LogOutContent>Logout</LogOutContent>
+                    </LogOutContainer>
+                </HeaderContainer>
+                {response.map((image) => {
+                   return(
+                       <PicBox key={image._id}>
+                           <Picture source={{uri:image.path}} />
+                           <PicText>Uploaded by: {image.username}</PicText>
+                           <PicText>Face Count: {image.countOfFaces}</PicText>
+                       </PicBox>
+                   )
+                })}
+            </Container>
+        </KeyboardWrapper>
     )
 }
 
-
 export default Home
+
