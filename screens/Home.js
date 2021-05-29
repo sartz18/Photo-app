@@ -14,6 +14,7 @@ import {
     PicText
 } from '../components/style'
 import axios from 'axios'
+import { Button, Alert } from 'react-native'
 
 const Home=({navigation,route})=>{
 
@@ -51,7 +52,13 @@ const Home=({navigation,route})=>{
                             }}
                         />
                     </AddPicContainer>
-                    <LogOutContainer  onPress={()=>navigation.navigate('Login') }>
+                    <LogOutContainer>
+                    <Button 
+                            title = "Test"
+                            onPress={() => Alert.alert("Holdup", "Do you really want to logout?", [
+                                { text: "Yes", onPress: () => navigation.navigate('Login')},
+                                { text: "No"},
+                            ])} />
                         <LogOutContent>Logout</LogOutContent>
                     </LogOutContainer>
                 </HeaderContainer>
